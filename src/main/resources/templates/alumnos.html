@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this template
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body>
+        <div>Listado de alumnos</div>
+        <a data-th-href="@{/}" href="#">Regresar al index</a>
+        <br>
+        <br>
+        
+        <div data-sec-authorize="hasRole('ROLE_ADMIN')">
+            <a href="/alumnos_agregar">Crear nuevo Alumno</a>
+            <br/><br/>
+        </div>
+        
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>MATRICULA</th>
+                    <th>ALUMNO</th>
+                    <th>OPCIONES</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                <tr data-th-each="dato: ${lista}">
+                    <td data-th-text="${dato.id}">1</td>
+                    <td data-th-text="${dato.matricula}">2020371064</td>
+                    <td data-th-text="${dato.nombre}">Daniel Vazquez</td>
+                    <td>Editar Borrar</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </body>
+</html>
