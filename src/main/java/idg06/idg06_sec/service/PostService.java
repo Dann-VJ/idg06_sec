@@ -56,4 +56,7 @@ public class PostService {
     }
 
     // Otros métodos relacionados con la funcionalidad de los posts
+    public Post findById(Long postId) {
+        return postRepository.findById(postId).orElse(null);
+    }
 }

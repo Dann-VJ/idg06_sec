@@ -28,54 +28,54 @@ import lombok.Data;
 @Data
 @Table(name = "users")
 public class Usuario {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id_user;
-    
+
     // username
     // @Column(length = 50, columnDefinition = "VARCHAR(50) DEFAULT 'user'")
     // private String username;
     // username
     // @Column(length = 50, nullable = false) // Agregar nullable = false para que no acepte valores nulos
     // private String username = "user"; // Valor predeterminado
-    
     // nombre
     @Column(length = 50)
     @NotEmpty
     private String nombre;
-    
+
     @Column(length = 50)
     @NotEmpty
     private String apellidos;
-    
+
     // Correo
     @Column(length = 50, unique = true)
     @NotEmpty
-    private String correo; 
-    
+    private String correo;
+
     // Contraseña
     @NotEmpty
     @Column(length = 255)
     @Size(min = 5, max = 255)
     private String password;
-    
+
     private boolean enabled;
-    
+
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_user")
     private List<Rol> authorities;
-    
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<DatosPersonales> datosPersonales;  
+    private List<DatosPersonales> datosPersonales;
     // Otros getters y setters...
 
     public List<DatosPersonales> getDatosPersonales() {
         return datosPersonales;
     }
-    
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> publicaciones = new ArrayList<>();
-    
+
     public List<Post> getPublicaciones() {
         return publicaciones;
     }
@@ -83,4 +83,8 @@ public class Usuario {
     public void setPublicaciones(List<Post> publicaciones) {
         this.publicaciones = publicaciones;
     }
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comentarios = new ArrayList<>();
+
 }

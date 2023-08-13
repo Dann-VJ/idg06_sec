@@ -4,6 +4,7 @@
  */
 package idg06.idg06_sec.model.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,11 +12,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import lombok.Data;
 
 /**
@@ -26,7 +30,7 @@ import lombok.Data;
 @Data
 @Table(name = "post")
 public class Post {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -36,7 +40,7 @@ public class Post {
 
     @Column(length = 100)
     private String imagen;
-    
+
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -47,14 +51,15 @@ public class Post {
     protected void onCreate() {
         fecha = new Date();
     }
-    
+
     @ManyToOne
     @JoinColumn(name = "id_user")
     private Usuario usuario;
-    
-    
-    // Getters y setters
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comentarios = new ArrayList<>();
+
+    // Getters y setters
     public Long getId() {
         return id;
     }
@@ -103,4 +108,3 @@ public class Post {
         this.usuario = usuario;
     }
 }
-

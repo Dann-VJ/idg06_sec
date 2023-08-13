@@ -56,7 +56,7 @@ public class WebSecurityConfig {
                             .requestMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
                             .requestMatchers("/crearPublicacion/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/publicaciones/**").hasAnyRole("ADMIN", "USER")
-                            
+                            .requestMatchers("/agregarComentario/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/signup/**").permitAll() 
                             .anyRequest().authenticated();
                 }
