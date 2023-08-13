@@ -16,6 +16,7 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.Data;
 
@@ -70,5 +71,16 @@ public class Usuario {
 
     public List<DatosPersonales> getDatosPersonales() {
         return datosPersonales;
+    }
+    
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> publicaciones = new ArrayList<>();
+    
+    public List<Post> getPublicaciones() {
+        return publicaciones;
+    }
+
+    public void setPublicaciones(List<Post> publicaciones) {
+        this.publicaciones = publicaciones;
     }
 }

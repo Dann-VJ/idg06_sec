@@ -54,7 +54,10 @@ public class WebSecurityConfig {
                             .requestMatchers("/alumnos_eliminar/**").hasRole("ADMIN")
                             .requestMatchers("/insertData/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/profile/**").hasAnyRole("USER", "ADMIN")
-                            .requestMatchers("/signup/**").permitAll()
+                            .requestMatchers("/crearPublicacion/**").hasAnyRole("ADMIN", "USER")
+                            .requestMatchers("/publicaciones/**").hasAnyRole("ADMIN", "USER")
+                            
+                            .requestMatchers("/signup/**").permitAll() 
                             .anyRequest().authenticated();
                 }
                 )
