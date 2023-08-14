@@ -5,7 +5,9 @@
 package idg06.idg06_sec.service;
 
 import idg06.idg06_sec.model.entity.Comment;
+import idg06.idg06_sec.model.entity.Post;
 import idg06.idg06_sec.model.repositories.CommentRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,5 +27,9 @@ public class CommentService {
 
     public Comment saveComment(Comment comment) {
         return commentRepository.save(comment);
+    }
+    
+    public List<Comment> getCommentsByPost(Post post) {
+        return commentRepository.findByPost(post);
     }
 }

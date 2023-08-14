@@ -56,8 +56,8 @@ public class Post {
     @JoinColumn(name = "id_user")
     private Usuario usuario;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comentarios = new ArrayList<>();
+    @OneToMany(mappedBy = "post")
+    private List<Comment> comentarios; // Comentarios realizados en la publicación
 
     // Getters y setters
     public Long getId() {

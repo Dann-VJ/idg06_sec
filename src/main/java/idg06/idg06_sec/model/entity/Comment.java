@@ -30,12 +30,12 @@ public class Comment {
     private String text;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", insertable = false, updatable = false)
-    private Usuario usuario;
+    @JoinColumn(name = "user_id") // Nombre de la columna en la tabla comment que almacena el ID del usuario
+    private Usuario usuario; // Usuario que realizó el comentario
 
     @ManyToOne
-    @JoinColumn(name = "id", insertable = false, updatable = false)
-    private Post post;
+    @JoinColumn(name = "post_id") // Aquí debes indicar el nombre de la columna en la tabla comment
+    private Post post; // Referencia al post al que pertenece el comentario
     
      // Getter and Setter for 'id'
     public Long getId() {

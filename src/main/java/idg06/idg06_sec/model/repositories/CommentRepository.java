@@ -5,6 +5,8 @@
 package idg06.idg06_sec.model.repositories;
 
 import idg06.idg06_sec.model.entity.Comment;
+import idg06.idg06_sec.model.entity.Post;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +16,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    // Puedes agregar métodos personalizados de consulta si es necesario
+    List<Comment> findByPost(Post post);
 }

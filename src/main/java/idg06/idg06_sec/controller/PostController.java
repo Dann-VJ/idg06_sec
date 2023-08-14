@@ -95,6 +95,13 @@ public class PostController {
     @GetMapping("/")
     public String mostrarPublicaciones(Model model) {
         List<Post> publicaciones = postService.getAllPosts();
+        
+        // Obtener la lista de comentarios para cada publicación
+        for (Post publicacion : publicaciones) {
+            List<Comment> comentarios = commentService.getCommentsByPost(publicacion);
+            publicacion.setComentarios(comentarios); // Asignar la lista de comentarios a la publicación
+        }
+        
         model.addAttribute("publicaciones", publicaciones);
         return "index";
     }
@@ -112,7 +119,7 @@ public class PostController {
             Comment comment = new Comment();
             comment.setText(comentario);
             comment.setUsuario(currentUser); // Establece el usuario actual en el comentario
-            comment.setPost(post); // Establece la publicación en el comentario
+            comment.setPost(post); // Establece la publicación en el comentario 
 
             commentService.saveComment(comment); // Guarda el comentario  
         } else {

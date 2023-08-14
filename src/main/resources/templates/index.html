@@ -83,14 +83,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                             </div>
                                             <hr>
                                             <div class="comments">
-                                                <div class="d-flex flex-row mb-2"> 
-                                                    <img src="https://i.imgur.com/9AZ2QX1.jpg" width="40" class="rounded-image">
-                                                    <div class="d-flex flex-column ml-2"> 
-                                                        <span class="name">Nombre</span> 
-                                                        <small class="comment-text">Comentario</small>
-                                                        <!--<div class="d-flex flex-row align-items-center status"> <small>Like</small> <small>Reply</small> <small>Translate</small> <small>18 mins</small> </div>-->
+                                                <div data-th-each="comentario : ${publicacion.comentarios}">
+                                                    <div class="d-flex flex-row mb-2"> 
+                                                        <img src="https://i.imgur.com/9AZ2QX1.jpg" width="40" class="rounded-image">
+                                                        <div class="d-flex flex-column ml-2"> 
+                                                            <span class="name" data-th-text="${comentario.usuario.nombre}">Nombre</span> 
+                                                            <small class="comment-text" data-th-text="${comentario.text}">Comentario</small>
+                                                            <!--<div class="d-flex flex-row align-items-center status"> <small>Like</small> <small>Reply</small> <small>Translate</small> <small>18 mins</small> </div>-->
+                                                        </div>
                                                     </div>
                                                 </div>
+
                                                 <div class="comment-input"> 
                                                     <form data-th-action="@{/agregarComentario}" method="post">
                                                         <div class="input-group">

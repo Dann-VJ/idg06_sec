@@ -67,6 +67,9 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DatosPersonales> datosPersonales;
+    
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comentarios; // Comentarios realizados por el usuario
     // Otros getters y setters...
 
     public List<DatosPersonales> getDatosPersonales() {
@@ -83,8 +86,5 @@ public class Usuario {
     public void setPublicaciones(List<Post> publicaciones) {
         this.publicaciones = publicaciones;
     }
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comentarios = new ArrayList<>();
 
 }
