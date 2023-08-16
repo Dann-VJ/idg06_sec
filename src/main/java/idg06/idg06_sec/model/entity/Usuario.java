@@ -17,6 +17,8 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import lombok.Data;
 
@@ -67,10 +69,9 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DatosPersonales> datosPersonales;
-    
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comentarios; // Comentarios realizados por el usuario
-    // Otros getters y setters...
 
     public List<DatosPersonales> getDatosPersonales() {
         return datosPersonales;
@@ -86,5 +87,23 @@ public class Usuario {
     public void setPublicaciones(List<Post> publicaciones) {
         this.publicaciones = publicaciones;
     }
+
+    @OneToMany(mappedBy = "myUser")
+    private List<Friend> amigos = new ArrayList<>(); // Cambio de Set a List 
+
+    public void agregarAmigo(Usuario amigo) {
+        if (amigo != null) {
+            Friend amistad = new Friend();
+            amistad.setMyUser(this); 
+            amistad.setFriend(amigo);
+            amistad.setFecha(new Date());
+            amigos.add(amistad);
+        }
+    }
+
+    public void eliminarAmigo(Usuario amigo) {
+        amigos.removeIf(amistad -> amistad.getFriend().equals(amigo));
+    }
+    
 
 }

@@ -42,6 +42,7 @@ public class WebSecurityConfig {
     public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
+    
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,6 +58,8 @@ public class WebSecurityConfig {
                             .requestMatchers("/crearPublicacion/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/publicaciones/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/agregarComentario/**").hasAnyRole("ADMIN", "USER")
+                            .requestMatchers("/pintar_usuarios/**").hasAnyRole("ADMIN", "USER")
+                            
                             .requestMatchers("/signup/**").permitAll() 
                             .anyRequest().authenticated();
                 }

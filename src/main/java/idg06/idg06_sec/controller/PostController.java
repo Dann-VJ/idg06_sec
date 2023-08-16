@@ -76,7 +76,7 @@ public class PostController {
             os.write(imageFile.getBytes());
         }
 
-        return "/uploads/post/" + fileName; // Devuelve la ruta relativa
+        return "uploads/post/" + fileName; // Devuelve la ruta relativa
     }
 
     @GetMapping("/publicacionesPorUsuario")

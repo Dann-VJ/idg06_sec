@@ -38,9 +38,15 @@ public class RegistroController {
         if (result.hasErrors()) {
             return "signup";
         }
-
-        // Verificar si el correo ya está registrado
-        if (usuarioService.existeCorreo(usuario.getCorreo())) {
+        
+        // Verificar si el correo tiene el dominio y si ya está registrado
+        String emailDominio = usuario.getCorreo();
+        String[] partes = emailDominio.split("@");
+        String nDomain = partes[1];
+        if (!nDomain.equals("uteq.edu.mx")) {
+            result.rejectValue("correo", "error.usuario", "Correo es invalido");
+            return "signup";
+        } else if (usuarioService.existeCorreo(usuario.getCorreo())) {
             result.rejectValue("correo", "error.usuario", "Ya existe un usuario con este correo");
             return "signup";
         }
