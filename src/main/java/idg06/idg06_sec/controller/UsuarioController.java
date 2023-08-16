@@ -36,7 +36,6 @@ public class UsuarioController {
         System.out.println("Carrera: " + datosPersonales.getCarrera());
         System.out.println("....: " + datosPersonales.getUsuario());
 
-
         datosPersonales.setUsuario(usuario);
         usuario.getDatosPersonales().add(datosPersonales);
         usuarioService.saveUsuario(usuario);
