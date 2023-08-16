@@ -4,19 +4,16 @@
  */
 package idg06.idg06_sec.controller;
 
-import idg06.idg06_sec.model.entity.Friend;
 import idg06.idg06_sec.model.entity.Usuario;
 import idg06.idg06_sec.service.FriendService;
+import idg06.idg06_sec.service.UsuarioService;
 import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -28,21 +25,35 @@ public class FriendController {
 
     @Autowired
     private FriendService friendService;
-
+    
+    @Autowired
+    private UsuarioService usuarioService;
+    
+    /*
     @GetMapping("/pintar_usuarios")
     public String mostrarUsuarios(Model model, Principal principal) {
         String correoPropietario = principal.getName();
         List<Friend> amigos = friendService.findAllExceptPropietario(correoPropietario);
-        System.out.println("Usuarios:"+amigos);
+        System.out.println("Usuarios:" + amigos);
         model.addAttribute("amigos", amigos);
+        return "index";
+    }*/
+
+    @GetMapping("/pintar_usuarios")
+    public String mostrarUsuarios(Model model, Principal principal) {
+        String correoPropietario = principal.getName();
+        List<Usuario> usuarios = usuarioService.findAllUsersExceptPropietario(correoPropietario);
+        model.addAttribute("usuarios", usuarios);
         return "index";
     }
 
     @PostMapping("/agregarAmigo")
     public String agregarAmigo(@RequestParam Long amigoId, Principal principal) {
         String correoUsuario = principal.getName();
+        System.out.println(correoUsuario);
+        System.out.println(amigoId);
         friendService.agregarAmigo(correoUsuario, amigoId);
-        return "redirect:/";
+        return "redirect:/pintar_usuarios";
     }
 
     @PostMapping("/eliminarAmigo")

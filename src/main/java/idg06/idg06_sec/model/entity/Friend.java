@@ -72,5 +72,13 @@ public class Friend {
         this.fecha = fecha;
     }
     
-    
+    // evitar la recursión infinita
+    @Override
+    public String toString() {
+        return "Friend{" +
+                "id=" + id +
+                ", fecha=" + fecha +
+                // Omitir relaciones con usuarios y otras relaciones
+                '}';
+    }
 }

@@ -5,6 +5,7 @@
 package idg06.idg06_sec.model.repositories;
 
 import idg06.idg06_sec.model.entity.Usuario;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -13,4 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     public Usuario findByCorreo(String correo);
+    
+    List<Usuario> findAllByCorreoNot(String correoPropietario);
 }

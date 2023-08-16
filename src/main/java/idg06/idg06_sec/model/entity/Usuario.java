@@ -53,7 +53,7 @@ public class Usuario {
     // Correo
     @Column(length = 50, unique = true)
     @NotEmpty
-    private String correo;
+    private String correo; 
 
     // Contraseña
     @NotEmpty
@@ -105,5 +105,16 @@ public class Usuario {
         amigos.removeIf(amistad -> amistad.getFriend().equals(amigo));
     }
     
+    // evitar la recursión infinita
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id_user=" + id_user +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", correo='" + correo + '\'' +
+                // Omitir relaciones con amigos y otras relaciones
+                '}';
+    }
 
 }

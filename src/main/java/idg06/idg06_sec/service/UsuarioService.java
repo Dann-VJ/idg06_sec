@@ -6,6 +6,7 @@ package idg06.idg06_sec.service;
 
 import idg06.idg06_sec.model.entity.Usuario;
 import idg06.idg06_sec.model.repositories.UsuarioRepository;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -52,5 +53,8 @@ public class UsuarioService {
     public Usuario saveUsuario(Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
-
+    
+    public List<Usuario> findAllUsersExceptPropietario(String correoPropietario) {
+        return usuarioRepository.findAllByCorreoNot(correoPropietario);
+    }
 }

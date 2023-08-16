@@ -114,6 +114,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             </div> 
                         </div> 
 
+                        <!-- Lista de usuarios -->
                         <div class="col-md-3">
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column">
@@ -121,16 +122,20 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <div class="text-center">
                                             <p><strong>Agrega amigos</strong></p>
 
-                                            <div class="row mt-3 mb-3" data-th-each="amigo : ${amigos}">
-                                                <form>
-                                                    <div class="col-md-8">
-                                                        <p data-th-text="${amigo.nombre}"><strong>Nombre</strong></p>
-                                                    </div>
-                                                    <div class="col-md-4">
-                                                        <button class="btn btn-primary btn-block">+</button>
-                                                    </div>
-                                                </form>
-                                                <hr>
+                                            <div class="nearby-user">
+                                                <div class="row mt-3 mb-3" data-th-each="usuario : ${usuarios}">
+                                                    <form data-th-action="@{/agregarAmigo}" method="post">
+                                                        <div class="col-md-7 col-sm-7">
+                                                            <input type="hidden" name="amigoId" data-th-value="${usuario.id_user}" />
+                                                            <h5><a href="#" class="profile-link" data-th-text="${usuario.nombre}">Name</a></h5>
+                                                            <p data-th-text="${usuario.correo}">Email</p>
+                                                            <!-- <p class="text-muted">500m away</p> -->
+                                                        </div>
+                                                        <div class="col-md-3 col-sm-3">
+                                                            <button type="submit" class="btn btn-primary pull-right">Add Friend</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
