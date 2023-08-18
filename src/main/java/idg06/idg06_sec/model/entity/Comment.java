@@ -36,8 +36,8 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "post_id") // Aquí debes indicar el nombre de la columna en la tabla comment
     private Post post; // Referencia al post al que pertenece el comentario
-    
-     // Getter and Setter for 'id'
+
+    // Getter and Setter for 'id'
     public Long getId() {
         return id;
     }
@@ -72,4 +72,15 @@ public class Comment {
     public void setPost(Post post) {
         this.post = post;
     }
+
+    @Override
+    public String toString() {
+        return "Comment{"
+                + "id=" + id
+                + ", text='" + text + '\''
+                + ", user=" + (usuario != null ? usuario.getId_user() : "null")
+                + ", post=" + (post != null ? post.getId() : "null")
+                + '}';
+    }
+
 }

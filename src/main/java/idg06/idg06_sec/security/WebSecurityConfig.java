@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
 /**
@@ -30,18 +31,16 @@ public class WebSecurityConfig {
     public static BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-    
+
     /*
     @Autowired
     public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }*/
-
     @Autowired
     public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception {
         builder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
     }
-    
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -57,13 +56,13 @@ public class WebSecurityConfig {
                             .requestMatchers("/crearPublicacion/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/publicaciones/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/agregarComentario/**").hasAnyRole("ADMIN", "USER")
-                            .requestMatchers("/agregarAmigo/**").hasAnyRole("ADMIN", "USER")
                             .requestMatchers("/pintar_usuarios/**").hasAnyRole("ADMIN", "USER")
-                            
-                            .requestMatchers("/signup/**").permitAll() 
+                            .requestMatchers("/recuperarPass/**").permitAll()
+                            .requestMatchers("/recuperar/**").permitAll()
+                            .requestMatchers("/signup/**").permitAll()
+                            .requestMatchers("/validarToken/**").permitAll()
                             .anyRequest().authenticated();
-                }
-                )
+                })
                 .formLogin((form) -> form
                 .loginPage("/login")
                 .permitAll()

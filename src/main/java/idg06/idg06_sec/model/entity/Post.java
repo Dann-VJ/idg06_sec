@@ -41,6 +41,9 @@ public class Post {
     @Column(length = 100)
     private String imagen;
 
+    @Column(name = "permiso")
+    private int permiso; // Puede ser int o boolean
+
     @Column(name = "fecha")
     @Temporal(TemporalType.TIMESTAMP)
     private Date fecha;
@@ -107,4 +110,28 @@ public class Post {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    // Getter y Setter para 'permiso'
+    public int getPermiso() {
+        return permiso;
+    }
+
+    public void setPermiso(int permiso) {
+        this.permiso = permiso;
+    }
+
+    @Override
+    public String toString() {
+        return "Post{"
+                + "id=" + id
+                + ", texto='" + texto + '\''
+                + ", imagen='" + imagen + '\''
+                + ", permiso=" + permiso
+                + ", fecha=" + fecha
+                + ", enabled=" + enabled
+                + ", usuario=" + (usuario != null ? usuario.getId_user() : "null")
+                + ", numComentarios=" + (comentarios != null ? comentarios.size() : 0)
+                + '}';
+    }
+
 }

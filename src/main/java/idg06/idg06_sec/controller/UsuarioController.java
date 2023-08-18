@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -42,4 +44,14 @@ public class UsuarioController {
         return "redirect:/profile";
     }
 
+    @GetMapping("/profile")
+    public String mostrarDatosPersonales(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String correoUsuario = authentication.getName();
+        Usuario usuario = usuarioService.findByCorreo(correoUsuario);
+        System.out.println("usuario........" + usuario);
+
+        model.addAttribute("usuario", usuario);
+        return "profile"; 
+    }
 }

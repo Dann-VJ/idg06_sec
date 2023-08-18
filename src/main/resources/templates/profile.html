@@ -17,10 +17,17 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="col">
                         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a data-th-href="@{/}">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">User</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                                <li class="breadcrumb-item active text-right" aria-current="page">Cerrar sesión</li>
+                                <li class="breadcrumb-item"><a data-th-href="@{/}">Inicio</a></li>
+                                <li class="breadcrumb-item"><a data-th-href="@{/profile}">Perfil</a></li>
+
+                                <li data-th-if="${#authorization.expression('isAuthenticated()')}" class="ms-auto">
+                                    <a data-th-href="@{/logout}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                        Cerrar sesión
+                                    </a>
+                                    <form id="logout-form" data-th-action="@{/logout}" method="post" style="display: none;">
+                                        <!-- Puedes agregar cualquier campo oculto necesario para la solicitud de cierre de sesión -->
+                                    </form>
+                                </li>
                             </ol>
                         </nav>
                     </div>
@@ -32,7 +39,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                             <div class="card-body d-flex flex-column justify-content-center align-items-center">
                                 <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
                                      class="rounded-circle img-fluid" style="width: 150px;">
-                                <h5 class="my-3">Name</h5>
+                                <h5 class="my-3" data-th-text="${usuario.nombre + ' ' +usuario.apellidos}">Name</h5>
                                 <p class="text-muted mb-1" data-sec-authentication="name">Correo</p>
                                 <p class="text-muted mb-4" data-sec-authentication="principal.authorities">Roles</p>
                                 <div class="d-flex justify-content-center mb-2">
@@ -45,58 +52,126 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
 
                     <!-- Información del card y inputs -->
                     <div class="col-lg-8">
-                        <!-- Podemos agregar más cards -->
 
                         <div class="card mb-4 h-100">
                             <div class="card-body d-flex flex-column justify-content-center">
-                                <form data-th-action="@{/insertData}" method="post">
+
+                                <!-- Si datosPersonales es una colección, puedes iterar sobre ella -->
+                                <div data-th-each="datosPersonal : ${usuario.datosPersonales}">
                                     <div class="row mb-3">
                                         <div class="col-sm-6 form-group">
-                                            <label>Formación académica anterior: </label>
-                                            <input class="form-control" type="text" name="formacionAcademicaAnterior"/>
+                                            <label>Formación académica anterior:</label>
+                                            <input class="form-control" type="text" data-th-value="${datosPersonal != null ? datosPersonal.formacionAcademicaAnterior : 'No disponible'}" disabled/>
                                         </div>
+
                                         <div class="col-sm-6 form-group">
-                                            <label>Carrera: </label>
-                                            <input class="form-control" type="text" name="carrera"/>
+                                            <label>Carrera:</label>
+                                            <input class="form-control" type="text" data-th-value="${datosPersonal != null ? datosPersonal.carrera : 'No disponible'}" disabled/>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <div class="col-sm-6 form-group">
-                                            <label>Trabajas actualmente: </label>
-                                            <input class="form-control" type="text" name="trabajaActualmente"/>
+                                            <label>Trabajas actualmente:</label>
+                                            <input class="form-control" type="text" data-th-value="${datosPersonal != null ? datosPersonal.trabajaActualmente : 'No disponible'}" disabled/>
                                         </div>
                                         <div class="col-sm-6 form-group">
-                                            <label>Donde trabajas: </label>
-                                            <input class="form-control" type="text" name="dondeTrabaja"/>
+                                            <label>Donde trabajas:</label>
+                                            <input class="form-control" type="text" data-th-value="${datosPersonal != null ? datosPersonal.dondeTrabaja : 'No disponible'}" disabled/>
                                         </div>
                                     </div>
 
                                     <div class="row mb-3">
                                         <div class="col-sm-6 form-group">
-                                            <label>Lugar de nacimiento: </label>
-                                            <input class="form-control" type="text" name="lugarNacimiento"/>
+                                            <label>Lugar de nacimiento:</label>
+                                            <input class="form-control" type="text" data-th-value="${datosPersonal != null ? datosPersonal.lugarNacimiento : 'No disponible'}" disabled/>
                                         </div>
                                         <div class="col-sm-6 form-group">
-                                            <label>Situación sentimental: </label>
-                                            <input class="form-control" type="text" name="situacionSentimental"/>
+                                            <label>Situación sentimental:</label>
+                                            <input class="form-control" type="text" data-th-value="${datosPersonal != null ? datosPersonal.situacionSentimental : 'No disponible'}" disabled/>
                                         </div>
                                     </div>
 
                                     <div class="row mb-4">
                                         <div class="col-sm-12 form-group">
-                                            <label>Tus gustos: </label>
-                                            <textarea class="form-control" style="height: 100px;" placeholder="" name="gustos"></textarea>
+                                            <label>Tus gustos:</label>
+                                            <input class="form-control" type="text" data-th-value="${datosPersonal != null ? datosPersonal.gustos : 'No disponibles'}" disabled/>
+                                            <!--<textarea class="form-control" style="height: 100px;" placeholder=""  disabled></textarea>-->
                                         </div>
                                     </div>
+                                </div>
 
-                                    <div class="d-flex justify-content-center mb-2">
-                                        <button type="submit" class="btn btn-primary">Guardar</button>
-                                    </div>
-                                </form>
+
+                                <div class="d-flex justify-content-center mb-2">
+                                    <!-- Button modal -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                        Agregar información
+                                    </button>
+                                </div>
 
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Agregar información</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form data-th-action="@{/insertData}" method="post">
+                            <div class="modal-body">
+
+                                <div class="row mb-3">
+                                    <div class="col-sm-6 form-group">
+                                        <label>Formación académica anterior: </label>
+                                        <input class="form-control" type="text" name="formacionAcademicaAnterior"/>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label>Carrera: </label>
+                                        <input class="form-control" type="text" name="carrera"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-sm-6 form-group">
+                                        <label>Trabajas actualmente: </label>
+                                        <input class="form-control" type="text" name="trabajaActualmente"/>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label>Donde trabajas: </label>
+                                        <input class="form-control" type="text" name="dondeTrabaja"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-sm-6 form-group">
+                                        <label>Lugar de nacimiento: </label>
+                                        <input class="form-control" type="text" name="lugarNacimiento"/>
+                                    </div>
+                                    <div class="col-sm-6 form-group">
+                                        <label>Situación sentimental: </label>
+                                        <input class="form-control" type="text" name="situacionSentimental"/>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-4">
+                                    <div class="col-sm-12 form-group">
+                                        <label>Tus gustos: </label>
+                                        <textarea class="form-control" style="height: 100px;" placeholder="" name="gustos"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" class="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@
 package idg06.idg06_sec.controller;
 
 import idg06.idg06_sec.model.entity.Comment;
+import idg06.idg06_sec.model.entity.Friend;
 import idg06.idg06_sec.model.entity.Post;
 import idg06.idg06_sec.model.entity.Usuario;
 import idg06.idg06_sec.service.CommentService;
@@ -27,7 +28,6 @@ import java.nio.file.Path; // Importa la clase Path
 import java.nio.file.Paths; // Importa la clase Paths
 import java.security.Principal;
 import java.util.List;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.GetMapping;
 import idg06.idg06_sec.service.UsuarioService;
 
@@ -47,7 +47,8 @@ public class PostController {
 
     @PostMapping("/crearPublicacion")
     public String crearPublicacion(@RequestParam("texto") String texto,
-            @RequestParam("imagen") MultipartFile imagen) throws IOException {
+            @RequestParam("imagen") MultipartFile imagen,
+            @RequestParam(required = false) Integer permiso) throws IOException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String correoUsuario = authentication.getName();
 
@@ -59,6 +60,13 @@ public class PostController {
         nuevaPublicacion.setTexto(texto);
         nuevaPublicacion.setImagen(imagenPath);
         nuevaPublicacion.setEnabled(true);
+
+        // Verificar si el checkbox estaba marcado
+        if (permiso != null && permiso == 1) {
+            nuevaPublicacion.setPermiso(1); // Permiso para amigos
+        } else {
+            nuevaPublicacion.setPermiso(0); // Permiso público
+        }
 
         // Guardar la publicación en la base de datos asociada al usuario actual
         postService.createPost(nuevaPublicacion, correoUsuario);
@@ -92,16 +100,38 @@ public class PostController {
     }
 
     // Mostramos las publicaciones
-    @GetMapping("/")
+    /*@GetMapping("/")
     public String mostrarPublicaciones(Model model) {
         List<Post> publicaciones = postService.getAllPosts();
-        
+
         // Obtener la lista de comentarios para cada publicación
         for (Post publicacion : publicaciones) {
             List<Comment> comentarios = commentService.getCommentsByPost(publicacion);
             publicacion.setComentarios(comentarios); // Asignar la lista de comentarios a la publicación
         }
+
+        model.addAttribute("publicaciones", publicaciones);
+        return "index";
+    }*/
+    @GetMapping("/")
+    public String mostrarPublicaciones(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String correoUsuario = authentication.getName();
         
+        System.out.println("Listando las publiaciones");
+        System.out.println("Mi correo: " + correoUsuario);
+
+        List<Post> publicaciones = postService.findPostsByPermisoAndAmigos(correoUsuario);
+        
+        System.out.println("Publicaciones obtenidas: " + publicaciones);
+
+
+        // Obtener la lista de comentarios para cada publicación
+        for (Post publicacion : publicaciones) {
+            List<Comment> comentarios = commentService.getCommentsByPost(publicacion);
+            publicacion.setComentarios(comentarios); // Asignar la lista de comentarios a la publicación
+        }
+
         model.addAttribute("publicaciones", publicaciones);
         return "index";
     }

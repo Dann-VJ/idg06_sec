@@ -17,8 +17,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                     <div class="col">
                         <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                             <ol class="breadcrumb mb-0">
-                                <li class="breadcrumb-item"><a data-th-href="@{/}">Home</a></li>
-                                <li class="breadcrumb-item"><a href="#">User</a></li>
+                                <li class="breadcrumb-item"><a data-th-href="@{/}">Inicio</a></li>
                                 <li class="breadcrumb-item"><a data-th-href="@{/profile}">Perfil</a></li>
 
                                 <li data-th-if="${#authorization.expression('isAuthenticated()')}" class="ms-auto">
@@ -41,14 +40,14 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                         <div class="col-md-3 mb-3">
                             <div class="card">
                                 <div class="card-body d-flex flex-column">
-                                    <form data-th-action="@{/crearPublicacion}" method="post" enctype="multipart/form-data"> 
+                                    <form id="file" data-th-action="@{/crearPublicacion}" method="post" enctype="multipart/form-data"> 
                                         <div class="row">
                                             <div class="text-center">
                                                 <p><strong>Realizar publicaión</strong></p>
                                             </div>
                                             <div class="col-sm-12 form-group mb-2">
                                                 <label>Texto: </label>
-                                                <input class="form-control" type="text" name="texto">
+                                                <input id="textoPublicacion" class="form-control" type="text" name="texto">
                                             </div>
                                             <div class="col-sm-12 form-group mb-2">
                                                 <div class="mb-3">
@@ -56,8 +55,15 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                                     <input type="file" class="form-control" id="imagen" name="imagen" accept="image/*">
                                                 </div>
                                             </div>
-                                            <div class="text-center">
-                                                <button type="submit" class="btn btn-primary" onclick="reloadPage()">Crear Publicación</button>
+                                            <div>
+                                                <small class="text-danger" id="errordatos" style="display: none;"></small>
+
+                                            </div>
+
+                                            <div class="out overout text-center">
+                                                <span class="mb-4">Preciona el botón para publicar</span>
+                                                <br>
+                                                <button id="btnGuardaPublicacion" type="submit" class="btn btn-primary" >Crear Publicación</button>
                                             </div>
                                         </div>
                                     </form>
@@ -122,20 +128,18 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
                                         <div class="text-center">
                                             <p><strong>Agrega amigos</strong></p>
 
-                                            <div class="nearby-user">
-                                                <div class="row mt-3 mb-3" data-th-each="usuario : ${usuarios}">
-                                                    <form data-th-action="@{/agregarAmigo}" method="post">
-                                                        <div class="col-md-7 col-sm-7">
-                                                            <input type="hidden" name="amigoId" data-th-value="${usuario.id_user}" />
-                                                            <h5><a href="#" class="profile-link" data-th-text="${usuario.nombre}">Name</a></h5>
-                                                            <p data-th-text="${usuario.correo}">Email</p>
-                                                            <!-- <p class="text-muted">500m away</p> -->
-                                                        </div>
-                                                        <div class="col-md-3 col-sm-3">
-                                                            <button type="submit" class="btn btn-primary pull-right">Add Friend</button>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                            <div class="row mt-3 mb-3" data-th-each="usuario : ${usuarios}">
+                                                <form data-th-action="@{/agregarAmigo}" method="post">
+                                                    <!-- Campo oculto para enviar el valor de amigoId -->
+                                                    <input type="hidden" name="amigoId" data-th-value="${usuario.id_user}" />
+                                                    <div class="col-md-8">
+                                                        <p data-th-text="${usuario.nombre}"><strong>Nombre</strong></p>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <button type="submit" class="btn btn-primary btn-block">+</button>
+                                                    </div>
+                                                </form>
+                                                <hr>
                                             </div>
                                         </div>
                                     </div>
@@ -150,5 +154,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Other/html.html to edit this temp
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <!--  -->
         <script data-th-src="@{/js/eventos.js}"></script>
+        <script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
     </body>
 </html>

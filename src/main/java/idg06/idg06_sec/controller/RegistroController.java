@@ -55,4 +55,10 @@ public class RegistroController {
         usuarioService.registrarUsuario(usuario);
         return "redirect:/login"; // Redirigir a una página de éxito de registro
     }
+    
+    @GetMapping("/recuperar")
+    public String recuperarcontrasenaView(Model model) {
+        
+        return "recuperarContra";
+    }
 }

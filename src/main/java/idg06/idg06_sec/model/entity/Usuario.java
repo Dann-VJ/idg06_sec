@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import lombok.Data;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 /**
  *
@@ -72,6 +73,9 @@ public class Usuario {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comentarios; // Comentarios realizados por el usuario
+    
+    @OneToMany(mappedBy = "usuario")
+    private List<Recuperar> solicitudesRecuperacion;
 
     public List<DatosPersonales> getDatosPersonales() {
         return datosPersonales;
@@ -116,5 +120,10 @@ public class Usuario {
                 // Omitir relaciones con amigos y otras relaciones
                 '}';
     }
-
+    
+    public void setContraseña(String contraseña) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        this.password = passwordEncoder.encode(contraseña);
+    }
+ 
 }
